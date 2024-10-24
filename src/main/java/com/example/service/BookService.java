@@ -5,6 +5,7 @@ import com.example.entity.Book;
 import com.example.exception.ResourceNotFoundException;
 import com.example.mapper.BookMapper;
 import com.example.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +55,19 @@ public class BookService {
         return bookRepository.findById(id)
                 .map(bookMapper::toDTO)
                 .orElse(null);
+    }
+    @Transactional
+    public String deleteBookById(Long id) throws Exception {
+        try {
+            if (bookRepository.existsById(id)) {
+                bookRepository.deleteById(id);
+                return "Book with ID " + id + " deleted successfully.";
+            } else {
+                throw new ResourceNotFoundException("Book with ID " + id + " not found.");
+            }
+        } catch (Exception exception) {
+            throw new Exception("An error occurred while deleting the book: " + exception.getMessage());
+        }
     }
 
 }

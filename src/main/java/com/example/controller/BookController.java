@@ -4,6 +4,7 @@ import com.example.dto.BookDTO;
 import com.example.entity.Book;
 import com.example.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,5 +38,9 @@ public class BookController {
 //            bookDTO.setId(id);
             return bookService.saveBook(bookDTO);
     }
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteBookById(@PathVariable Long id) throws Exception {
+        String result = bookService.deleteBookById(id);
+        return ResponseEntity.ok(result);
+    }
 }

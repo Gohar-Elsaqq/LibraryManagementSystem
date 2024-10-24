@@ -25,7 +25,7 @@ public class Book {
     private int publicationYear;
     private String isbn;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<BorrowingRecord> borrowingRecords;
 }
