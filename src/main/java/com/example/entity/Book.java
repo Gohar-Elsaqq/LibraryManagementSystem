@@ -1,4 +1,5 @@
 package com.example.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.Getter;
@@ -25,5 +26,6 @@ public class Book {
     private String isbn;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<BorrowingRecord> borrowingRecords;
 }
