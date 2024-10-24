@@ -5,6 +5,7 @@ import com.example.entity.Book;
 import com.example.exception.ResourceNotFoundException;
 import com.example.mapper.BookMapper;
 import com.example.repository.BookRepository;
+import com.example.repository.BorrowingRecordRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ public class BookService {
     private BookRepository bookRepository;
     @Autowired
     private BookMapper bookMapper;
+    @Autowired
+    private BorrowingRecordRepository borrowingRecordRepository;
     //add book
     public BookDTO saveBook(BookDTO bookDTO) {
 
@@ -56,10 +59,11 @@ public class BookService {
                 .map(bookMapper::toDTO)
                 .orElse(null);
     }
-    @Transactional
+
     public String deleteBookById(Long id) throws Exception {
         try {
             if (bookRepository.existsById(id)) {
+                borrowingRecordRepository.deleteByBookId(id);
                 bookRepository.deleteById(id);
                 return "Book with ID " + id + " deleted successfully.";
             } else {
